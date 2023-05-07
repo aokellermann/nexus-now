@@ -1,0 +1,22 @@
+{
+  "manifest_version": 2,
+  "name": "Nexus Now!",
+  "short_name": "nexus-now",
+  "version": "0.0.1",
+  "author": "Antony Kellermann",
+  "homepage_url": "https://github.com/aokellermann/nexus-now",
+  "description": "Access scientific literature using nexus.",
+  "browser_action": {
+    "browser_style": true
+  },
+  "permissions": [
+    "<all_urls>",
+    "contextMenus"
+  ],
+  "background": {
+    "scripts": [
+      "browser-polyfill.js",
+      "background.js"
+    ]
+  }
+}
