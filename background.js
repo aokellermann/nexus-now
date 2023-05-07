@@ -14,10 +14,12 @@ function getHtml(htmlSource) {
     htmlSource = htmlSource[0];
     foundRegex = htmlSource.match(doiRegex);
     if (foundRegex) {
-        foundRegex = foundRegex[0].split(";")[0];
+        var doi = foundRegex[0].split(";")[0];
+        doi = doi.replace(/\.pdf/, "");
+        var destUrl = nexusUrl + doi;
         // console.log("Regex: " + foundRegex);
         var creatingTab = browser.tabs.create({
-            url: nexusUrl + foundRegex,
+            url: destUrl,
         });
         creatingTab.then();
     } else {
@@ -29,7 +31,7 @@ function getHtml(htmlSource) {
 
 function executeJs() {
     const executing = browser.tabs.executeScript({
-        code: "document.documentElement.innerHTML",
+        code: "document.body.innerHTML",
     });
     executing.then(getHtml);
 }

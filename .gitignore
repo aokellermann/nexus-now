@@ -1,0 +1,3 @@
+nexus-now.zip
+
+zip -r -FS ../my-extension.zip * --exclude '*.git*'
