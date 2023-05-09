@@ -2,7 +2,7 @@
   "manifest_version": 2,
   "name": "Nexus Now!",
   "short_name": "nexus-now",
-  "version": "0.0.2",
+  "version": "0.0.4",
   "author": "Antony Kellermann",
   "homepage_url": "https://github.com/aokellermann/nexus-now",
   "description": "Access scientific literature using nexus.",
@@ -18,5 +18,10 @@
       "browser-polyfill.js",
       "background.js"
     ]
+  },
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "{2ba6d294-d94a-4d52-97da-f20591128801}"
+    }
   }
 }

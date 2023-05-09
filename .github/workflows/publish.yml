@@ -1,0 +1,23 @@
+name: Publish
+
+on: push
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      - run: npm install -G web-ext
+
+      - run: web-ext lint
+      - run: web-ext build
+      - run: web-ext sign || true
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: dist-without-markdown
+          path: web-ext-artifacts/*
