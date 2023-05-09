@@ -12,9 +12,12 @@ jobs:
           node-version: 16
 
       - run: npm install -g web-ext
-      - run: "$(npm config get prefix)/bin/web-ext" lint
-      - run: "$(npm config get prefix)/bin/web-ext" build
-      - run: "$(npm config get prefix)/bin/web-ext" sign || true
+      - run: |
+          "$(npm config get prefix)/bin/web-ext" lint
+      - run: |
+          "$(npm config get prefix)/bin/web-ext" build
+      - run: |
+          "$(npm config get prefix)/bin/web-ext" sign || true
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
