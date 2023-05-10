@@ -2,12 +2,20 @@
   "manifest_version": 2,
   "name": "Nexus Now!",
   "short_name": "nexus-now",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "author": "Antony Kellermann",
   "homepage_url": "https://github.com/aokellermann/nexus-now",
   "description": "Access scientific literature using nexus.",
+  "icons": {
+    "48": "icons/48x48.png",
+    "96": "icons/96x96.png"
+  },
   "browser_action": {
-    "browser_style": true
+    "browser_style": true,
+    "default_icon": {
+      "48": "icons/48x48.png",
+      "96": "icons/96x96.png"
+    }
   },
   "permissions": [
     "<all_urls>",
