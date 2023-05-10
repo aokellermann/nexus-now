@@ -1,6 +1,9 @@
 name: Publish
 
-on: push
+on:
+  push:
+    branches:
+      - master
 
 jobs:
   build:
@@ -12,21 +15,9 @@ jobs:
           node-version: 16
 
       - run: npm install -g web-ext
-      - name: Lint extension
-        run: |
-          "$(npm config get prefix)/bin/web-ext" lint
-      - name: Build extension
-        run: |
-          "$(npm config get prefix)/bin/web-ext" build
       - name: Publish extension
         run: |
           "$(npm config get prefix)/bin/web-ext" sign || true
         env:
           WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
           WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
-
-      - name: Upload artifacts
-        uses: actions/upload-artifact@v3
-        with:
-          name: artifacts
-          path: web-ext-artifacts/*
