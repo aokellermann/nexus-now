@@ -2,7 +2,7 @@
 
 
 
-for browser in "firefox" "chrome"
+for browser in "firefox" "chromium"
 do
   src=build/"$browser"/src
   bin=build/"$browser"/bin
