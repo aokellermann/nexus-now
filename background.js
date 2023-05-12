@@ -63,10 +63,12 @@ if (typeof browser === "undefined") {
 }
 
 // add nexus option to context menu (right click)
-browser.contextMenus.create({
-    id: "nexus-doi-selection",
-    title: "Find article on Nexus!",
-    contexts: ["selection", "link"],
+browser.runtime.onInstalled.addListener(() => {
+    browser.contextMenus.create({
+        id: "nexus-doi-selection",
+        title: "Find article on Nexus!",
+        contexts: ["selection", "link"],
+    });
 });
 
 // when nexus option in context menu is clicked
