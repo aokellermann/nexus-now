@@ -10,13 +10,20 @@ do
   rm -rf $src
   mkdir -p $src $bin
 
-  cp -r LICENSE README.md manifests/"$browser"/manifest.json background.js $src
+  cp -r LICENSE README.md manifests/"$browser"/manifest.json icons background.js  $src
 
-  version=$(jq '.version' < manifests/"$browser"/manifest.json | tr -d '"')
+  version=$(jq '.version' < $src/manifest.json | tr -d '"')
   if [ "$1" = "lint" ];
   then
-    "$(npm config get prefix)"/bin/web-ext lint-a $src
+    if [ $browser = "firefox" ];
+    then
+      cd $src || exit 2
+      "$(npm config get prefix)"/bin/web-ext lint
+      cd ../../..
+    fi
   else
-    "$(npm config get prefix)"/bin/web-ext build -o -a $src -n $bin/"nexus-now_\"$version\"_$browser.zip"
+    cd $bin || exit 2
+    "$(npm config get prefix)"/bin/web-ext build -o -s ../src -n "nexus-now_\"$version\"_$browser.zip"
+    cd ../../..
   fi
 done
