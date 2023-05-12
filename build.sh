@@ -23,7 +23,7 @@ do
     fi
   else
     cd $bin || exit 2
-    "$(npm config get prefix)"/bin/web-ext build -o -s ../src -n "nexus-now_\"$version\"_$browser.zip"
+    "$(npm config get prefix)"/bin/web-ext build -o -a . -s ../src -n "nexus-now_\"$version\"_$browser.zip"
     cd ../../..
   fi
 done

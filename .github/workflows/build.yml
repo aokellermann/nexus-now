@@ -13,14 +13,12 @@ jobs:
 
       - run: npm install -g web-ext
       - name: Lint extension
-        run: |
-          "$(npm config get prefix)/bin/web-ext" lint
+        run: ./build.sh lint
       - name: Build extension
-        run: |
-          "$(npm config get prefix)/bin/web-ext" build
+        run: ./build.sh
 
       - name: Upload artifacts
         uses: actions/upload-artifact@v3
         with:
           name: artifacts
-          path: web-ext-artifacts/*
+          path: build/**/bin/*
