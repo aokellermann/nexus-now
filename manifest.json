@@ -1,31 +1,43 @@
 {
-  "manifest_version": 2,
+  "manifest_version": 3,
   "name": "Nexus Now!",
   "short_name": "nexus-now",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "author": "Antony Kellermann",
   "homepage_url": "https://github.com/aokellermann/nexus-now",
   "description": "Access scientific literature using nexus.",
   "icons": {
-    "48": "icons/48x48.png",
-    "96": "icons/96x96.png"
+    "48": "icons/48x48-hybrid.png",
+    "96": "icons/96x96-hybrid.png"
   },
-  "browser_action": {
+  "action": {
     "browser_style": true,
     "default_icon": {
-      "48": "icons/48x48.png",
-      "96": "icons/96x96.png"
-    }
+      "48": "icons/48x48-hybrid.png",
+      "96": "icons/96x96-hybrid.png",
+      "128": "icons/128x128-hybrid.png"
+    },
+    "default_title": "Nexus Now!",
+    "theme_icons": [
+      {
+        "light": "icons/48x48-light.png",
+        "dark": "icons/48x48-dark.png",
+        "size": 48
+      },
+      {
+        "light": "icons/96x96-light.png",
+        "dark": "icons/96x96-dark.png",
+        "size": 96
+      }
+    ]
   },
   "permissions": [
-    "<all_urls>",
-    "contextMenus"
+    "activeTab",
+    "contextMenus",
+    "scripting"
   ],
   "background": {
-    "scripts": [
-      "browser-polyfill.js",
-      "background.js"
-    ]
+    "service_worker": "background.js"
   },
   "browser_specific_settings": {
     "gecko": {
