@@ -21,8 +21,8 @@ jobs:
         run: |
           "$(npm config get prefix)"/bin/shipit firefox build/firefox/bin || true
         env:
-          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
-          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+          WEXT_SHIPIT_FIREFOX_JWT_ISSUER: ${{ secrets.WEB_EXT_API_KEY }}
+          WEXT_SHIPIT_FIREFOX_JWT_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
 
       - name: Publish to Chrome
         run: |
