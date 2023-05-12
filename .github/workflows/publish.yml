@@ -14,15 +14,16 @@ jobs:
         with:
           node-version: 16
 
-      - run: npm install -g web-ext @wext/shipit
+      - run: npm install -g web-ext
       - name: Build extension
         run: ./build.sh
       - name: Publish to Mozilla
         run: |
-          "$(npm config get prefix)"/bin/shipit firefox build/firefox/bin || true
+          cd build/firefox/bin
+          "$(npm config get prefix)"/bin/web-ext sign -a . -s ../src || true
         env:
-          WEXT_SHIPIT_FIREFOX_JWT_ISSUER: ${{ secrets.WEB_EXT_API_KEY }}
-          WEXT_SHIPIT_FIREFOX_JWT_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
+          WEB_EXT_API_KEY: ${{ secrets.WEB_EXT_API_KEY }}
+          WEB_EXT_API_SECRET: ${{ secrets.WEB_EXT_API_SECRET }}
 
       - name: Publish to Chrome
         run: |
@@ -41,7 +42,7 @@ jobs:
           PACKAGE=$(find build/chromium/bin -type f -name "*.zip")
           MSE_ACCESS_TOKEN=$(curl "$MSE_ACCESS_TOKEN_URL" -X POST -H "Content-Type: application/x-www-form-urlencoded" -d "client_id=${MSE_CLIENT_ID}&client_secret=${MSE_CLIENT_SECRET}&scope=https://api.addons.microsoftedge.microsoft.com/.default&grant_type=client_credentials&redirect_uri=urn:ietf:wg:oauth:2.0:oob" | jq -r .access_token)
           curl -H "Authorization: Bearer ${MSE_ACCESS_TOKEN}" -H "Content-Type: application/zip" -X POST -T $PACKAGE "https://api.addons.microsoftedge.microsoft.com/v1/products/$MSE_EXTENSION_ID/submissions/draft/package"
-          curl -H "Authorization: Bearer ${MSE_ACCESS_TOKEN}" -X POST "https://api.addons.microsoftedge.microsoft.com/v1/products/$MSE_EXTENSION_ID/submissions"
+          curl -H "Authorization: Bearer ${MSE_ACCESS_TOKEN}" -H "Content-Length: 0" -X POST "https://api.addons.microsoftedge.microsoft.com/v1/products/$MSE_EXTENSION_ID/submissions"
         env:
           MSE_CLIENT_ID: ${{ secrets.MSE_CLIENT_ID }}
           MSE_CLIENT_SECRET: ${{ secrets.MSE_CLIENT_SECRET }}
