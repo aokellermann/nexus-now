@@ -2,8 +2,8 @@ name: Publish
 
 on:
   push:
-    branches:
-      - master
+    tags:
+      - "v*.*.*"
 
 jobs:
   publish:
@@ -14,7 +14,9 @@ jobs:
         with:
           node-version: 16
 
-      - run: npm install -g web-ext
+      - name: Install dependencies
+        run: npm install -g web-ext
+
       - name: Build extension
         run: ./build.sh
       - name: Publish to Mozilla
