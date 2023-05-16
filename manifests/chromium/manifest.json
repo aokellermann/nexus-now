@@ -20,13 +20,13 @@
     "default_title": "Nexus Now!",
     "theme_icons": [
       {
-        "light": "icons/48x48-light.png",
-        "dark": "icons/48x48-dark.png",
+        "light": "icons/48x48-dark.png",
+        "dark": "icons/48x48-light.png",
         "size": 48
       },
       {
-        "light": "icons/96x96-light.png",
-        "dark": "icons/96x96-dark.png",
+        "light": "icons/96x96-dark.png",
+        "dark": "icons/96x96-light.png",
         "size": 96
       }
     ]
