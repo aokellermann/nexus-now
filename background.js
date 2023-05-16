@@ -36,20 +36,7 @@ async function onMessage(request, sender, sendResponse) {
 async function onExtensionClick(tab) {
     await browser.scripting.executeScript({
         target: {tabId: tab.id},
-        func: async () => {
-            if (typeof browser === "undefined") {
-                browser = chrome;
-            }
-
-            const foundRegex = document.body.innerHTML.match(/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/);
-            if (foundRegex) {
-                let doi = foundRegex[0].split(";")[0];
-                doi = doi.replace(/\.pdf/, "");
-                await browser.runtime.sendMessage({openTab: doi});
-            } else {
-                await browser.runtime.sendMessage({fail: true});
-            }
-        }
+        files: ["content.js"]
     });
 }
 

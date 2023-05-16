@@ -10,7 +10,7 @@ do
   rm -rf $src
   mkdir -p $src $bin
 
-  cp -r LICENSE README.md manifests/"$browser"/manifest.json icons background.js  $src
+  cp -r LICENSE README.md manifests/"$browser"/manifest.json icons background.js content.js $src
 
   version=$(jq '.version' < $src/manifest.json | tr -d '"')
   if [ "$1" = "lint" ];
