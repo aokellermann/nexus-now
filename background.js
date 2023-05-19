@@ -41,7 +41,9 @@ async function onExtensionClick(tab) {
                 browser = chrome;
             }
 
-            const foundRegex = document.body.innerHTML.match(/\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/);
+            const re = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
+            let foundRegex = location.href.match(re);
+            if (!foundRegex) foundRegex = document.body.innerHTML.match(re);
             if (foundRegex) {
                 let doi = foundRegex[0].split(";")[0];
                 doi = doi.replace(/\.pdf/, "");
