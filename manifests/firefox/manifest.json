@@ -34,10 +34,14 @@
   "permissions": [
     "activeTab",
     "contextMenus",
-    "scripting"
+    "scripting",
+    "storage"
   ],
   "background": {
     "scripts": ["background.js"]
+  },
+  "options_ui": {
+    "page": "options.html"
   },
   "browser_specific_settings": {
     "gecko": {
