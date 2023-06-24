@@ -1,12 +1,53 @@
-// Old and less strict DOI regex.
-// const doiRegex = "10.\\d{4,9}/[-._;()/:a-z0-9A-Z]+";
 const doiRegex = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
-const nexusUrl = "https://standard--template--construct-org.ipns.dweb.link/#/nexus_science/doi:";
+const stcUrl = "https://standard--template--construct-org.ipns.dweb.link/#/nexus_science/doi:";
+const carUrl = "https://bafyb4iee27p2wdqsorvj7gquitwuti3sfeepdvx2p3feao2dqri37fm3yy.ipfs.dweb.link";
 const trueRed = "#BC243C";
 
-async function openTab(doi) {
+async function onInstalled(details) {
+    // add nexus option to context menu (right click)
+    await browser.contextMenus.create({
+        id: "nexus-doi-selection",
+        title: "Find article on Nexus!",
+        contexts: ["selection", "link"],
+    });
+
+    if (details.reason === "install") {
+        await browser.runtime.openOptionsPage();
+    }
+}
+
+async function handleDoi(doi) {
+    const optionsData = await browser.storage.sync.get("options");
+    const autodownload = optionsData?.options?.autodownload;
+
+    if (autodownload) {
+        const url = `${carUrl}/${encodeURIComponent(encodeURIComponent(doi))}.pdf`;
+        console.log(`Attempting to download pdf from ${url}`)
+        const downloadId = await browser.downloads.download({
+            url: url,
+            filename: `${doi}.pdf`
+        });
+        console.log(`Started download`);
+
+        const timeout = 1000;
+        await new Promise(r => setTimeout(r, timeout));
+
+        const downloads = await browser.downloads.search({id: downloadId});
+        const download = downloads[0];
+        const bytesReceived = download.bytesReceived;
+        console.log(`Received ${bytesReceived} after ${timeout} ms`);
+
+        if (bytesReceived) return;
+    }
+
+    const url = stcUrl + doi;
+    console.log(`Opening STC in new tab: ${url}`)
+    await openTab(url);
+}
+
+async function openTab(url) {
     await browser.tabs.create({
-        url: nexusUrl + doi,
+        url: url
     });
 }
 
@@ -19,13 +60,13 @@ async function onNexusContextClick(info, tab) {
         doi = info.selectionText;
     }
 
-    await openTab(doi);
+    await handleDoi(doi);
 }
 
 async function onMessage(request, sender, sendResponse) {
     console.log(request);
     if (request.openTab) {
-        await openTab(request.openTab);
+        await handleDoi(request.openTab);
     } else if (request.fail) {
         await browser.action.setBadgeTextColor({color: "white"});
         await browser.action.setBadgeBackgroundColor({color: trueRed});
@@ -64,14 +105,7 @@ if (typeof browser === "undefined") {
     browser = chrome;
 }
 
-// add nexus option to context menu (right click)
-browser.runtime.onInstalled.addListener(() => {
-    browser.contextMenus.create({
-        id: "nexus-doi-selection",
-        title: "Find article on Nexus!",
-        contexts: ["selection", "link"],
-    });
-});
+browser.runtime.onInstalled.addListener(onInstalled);
 
 // when nexus option in context menu is clicked
 browser.contextMenus.onClicked.addListener(onNexusContextClick);

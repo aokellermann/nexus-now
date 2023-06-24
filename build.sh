@@ -1,7 +1,5 @@
 #!/usr/bin/env bash
 
-
-
 for browser in "firefox" "chromium"
 do
   src=build/"$browser"/src
