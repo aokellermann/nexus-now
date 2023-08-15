@@ -1,7 +1,9 @@
 const doiRegex = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
 const stcUrl = "https://standard--template--construct-org.ipns.dweb.link/#/nexus_science/doi:";
-const carUrl = "https://bafyb4iee27p2wdqsorvj7gquitwuti3sfeepdvx2p3feao2dqri37fm3yy.ipfs.dweb.link";
 const trueRed = "#BC243C";
+
+INTERNET_IPFS_GATEWAY_URL = new URL('https://dweb.link')
+HUB_DOMAIN = 'hub-standard--template--construct-org'
 
 async function onInstalled(details) {
     // add nexus option to context menu (right click)
@@ -11,9 +13,16 @@ async function onInstalled(details) {
         contexts: ["selection", "link"],
     });
 
+    // open options page to choose autodownload if they want
     if (details.reason === "install") {
         await browser.runtime.openOptionsPage();
     }
+}
+
+function getUrl(doi) {
+    const host = INTERNET_IPFS_GATEWAY_URL;
+    const baseUrl = new URL(`${host.protocol}//${HUB_DOMAIN}.ipns.${host.host}`);
+    return new URL(`${encodeURIComponent(encodeURIComponent(doi))}.pdf`, baseUrl);
 }
 
 async function handleDoi(doi) {
@@ -21,25 +30,41 @@ async function handleDoi(doi) {
     const autodownload = optionsData?.options?.autodownload;
 
     if (autodownload) {
-        const url = `${carUrl}/${encodeURIComponent(encodeURIComponent(doi))}.pdf`;
+        const url = getUrl(doi);
         console.log(`Attempting to download pdf from ${url}`)
-        const downloadId = await browser.downloads.download({
-            url: url,
+
+        let downloadId;
+        browser.downloads.download({
+            url: url.href,
             filename: `${doi}.pdf`
+        }).then(id => {
+            downloadId = id;
         });
         console.log(`Started download`);
 
-        const timeout = 1000;
+        const timeout = 5000;
         await new Promise(r => setTimeout(r, timeout));
 
-        const downloads = await browser.downloads.search({id: downloadId});
-        const download = downloads[0];
-        const bytesReceived = download.bytesReceived;
-        console.log(`Received ${bytesReceived} after ${timeout} ms`);
+        let downloadStarted = false;
+        if (downloadId) {
+            const downloads = await browser.downloads.search({id: downloadId});
+            const download = downloads[0];
+            const bytesReceived = download.bytesReceived;
+            console.log(`Received ${bytesReceived} after ${timeout} ms`);
+            downloadStarted = bytesReceived !== 0;
 
-        if (bytesReceived) return;
+            if (!downloadStarted) {
+                // clean up if download failed to start
+                browser.downloads.erase({id: downloadId })
+            }
+        }
+
+        if (downloadStarted) {
+            return;
+        }
     }
 
+    // if download didn't start, open in new tab
     const url = stcUrl + doi;
     console.log(`Opening STC in new tab: ${url}`)
     await openTab(url);
