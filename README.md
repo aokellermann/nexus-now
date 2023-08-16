@@ -54,6 +54,12 @@ else).
 1. Go to the [latest release](https://github.com/aokellermann/nexus-now/releases) and download the `.xpi` file.
 2. It will ask you if you want to install the addon. Click yes.
 
+## Updating
+
+Automatic extension updating was introduced in version 0.2.1. If you have an older version than 0.2.1 installed,
+it is highly recommended that you manually install the latest version, which will subsequently be able to update
+itself without your manual intervention.
+
 ## Compatibility
 
 This extension uses Manifest V3, which is supported in:
