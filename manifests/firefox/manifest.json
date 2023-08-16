@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Nexus Now!",
   "short_name": "nexus-now",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Antony Kellermann",
   "homepage_url": "https://github.com/aokellermann/nexus-now",
   "description": "Access scientific literature using nexus.",
@@ -47,7 +47,8 @@
   },
   "browser_specific_settings": {
     "gecko": {
-      "id": "nexus-now@aokellermann"
+      "id": "nexus-now@aokellermann",
+      "update_url": "https://raw.githubusercontent.com/aokellermann/nexus-now/master/updates/firefox.json"
     }
   }
 }
