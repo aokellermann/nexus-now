@@ -1,5 +1,5 @@
 const doiRegex = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
-const stcUrl = "https://standard--template--construct-org.ipns.dweb.link/#/nexus_science/doi:";
+const stcUrl = "https://libstc.cc/#/nexus_science/id.dois:"
 const trueRed = "#BC243C";
 
 INTERNET_IPFS_GATEWAY_URL = new URL('https://dweb.link')
