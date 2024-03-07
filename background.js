@@ -1,9 +1,7 @@
 const doiRegex = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
 const stcUrl = "https://libstc.cc/#/nexus_science/id.dois:"
+const hubBaseUrl = new URL('https://hub.libstc.cc')
 const trueRed = "#BC243C";
-
-INTERNET_IPFS_GATEWAY_URL = new URL('https://dweb.link')
-HUB_DOMAIN = 'hub-standard--template--construct-org'
 
 async function onInstalled(details) {
     // add nexus option to context menu (right click)
@@ -19,55 +17,61 @@ async function onInstalled(details) {
     }
 }
 
-function getUrl(doi) {
-    const host = INTERNET_IPFS_GATEWAY_URL;
-    const baseUrl = new URL(`${host.protocol}//${HUB_DOMAIN}.ipns.${host.host}`);
-    return new URL(`${encodeURIComponent(encodeURIComponent(doi))}.pdf`, baseUrl);
+function getStcWebUrl(doi) {
+   return stcUrl + doi;
 }
+
+function getDownloadUrl(doi) {
+    return new URL(`${doi}.pdf`, hubBaseUrl);
+}
+
+const downloadDois = new Map();
 
 async function handleDoi(doi) {
     const optionsData = await browser.storage.sync.get("options");
     const autodownload = optionsData?.options?.autodownload;
 
     if (autodownload) {
-        const url = getUrl(doi);
+        const url = getDownloadUrl(doi);
         console.log(`Attempting to download pdf from ${url}`)
 
-        let downloadId;
-        browser.downloads.download({
+        const downloadId = await browser.downloads.download({
             url: url.href,
             filename: `${doi}.pdf`
-        }).then(id => {
-            downloadId = id;
         });
-        console.log(`Started download`);
+
+        if (!downloadId) {
+            console.log(`Download for ${url} failed to start`)
+            return
+        }
+
+        downloadDois.set(downloadId, doi);
+        console.log(`Started download with id ${downloadId} from ${url}`);
 
         const timeout = 5000;
         await new Promise(r => setTimeout(r, timeout));
 
-        let downloadStarted = false;
         if (downloadId) {
             const downloads = await browser.downloads.search({id: downloadId});
             const download = downloads[0];
+            if (!download) {
+                return;
+            }
             const bytesReceived = download.bytesReceived;
             console.log(`Received ${bytesReceived} after ${timeout} ms`);
-            downloadStarted = bytesReceived !== 0;
+            const downloadStarted = bytesReceived !== 0;
 
             if (!downloadStarted) {
                 // clean up if download failed to start
-                browser.downloads.erase({id: downloadId })
+                await handleDownloadFailed(downloadId)
             }
         }
 
-        if (downloadStarted) {
-            return;
-        }
+    } else {
+        const url = getStcWebUrl(doi);
+        console.log(`Opening STC in new tab: ${url}`)
+        await openTab(url);
     }
-
-    // if download didn't start, open in new tab
-    const url = stcUrl + doi;
-    console.log(`Opening STC in new tab: ${url}`)
-    await openTab(url);
 }
 
 async function openTab(url) {
@@ -121,6 +125,36 @@ async function onExtensionClick(tab) {
     });
 }
 
+async function onDownloadChanged(delta) {
+    if (!downloadDois.has(delta.id)) return
+
+    console.log(`download delta: ${JSON.stringify(delta)}`)
+    if (delta.state) {
+        if (delta.state.current === "complete") {
+            handleDownloadComplete(delta.id)
+        } else if (delta.state.current === "interrupted") {
+            await handleDownloadFailed(delta.id)
+        }
+    }
+}
+
+function handleDownloadComplete(id) {
+    console.log(`Download ${id} succeeded for doi ${downloadDois.get(id)}`)
+    downloadDois.delete(id)
+}
+
+async function handleDownloadFailed(id) {
+    const doi = downloadDois.get(id)
+    downloadDois.delete(id)
+    console.log(`Download ${id} failed for doi ${doi}`)
+
+    await browser.downloads.erase({id: id})
+
+    const url = stcUrl + doi;
+    console.log(`Opening STC in new tab: ${url}`)
+    await openTab(url);
+}
+
 async function resetBadgeText() {
     await browser.action.setBadgeText({text: ""});
 }
@@ -139,5 +173,7 @@ browser.contextMenus.onClicked.addListener(onNexusContextClick);
 browser.action.onClicked.addListener(onExtensionClick);
 
 browser.runtime.onMessage.addListener(onMessage);
+
+browser.downloads.onChanged.addListener(onDownloadChanged);
 
 browser.tabs.onUpdated.addListener(resetBadgeText);
