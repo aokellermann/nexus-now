@@ -1,4 +1,4 @@
-const doiRegex = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
+const doiRegex = new RegExp('10[.][0-9]{2,}(?:[.][0-9]+)*/(?:(?![%"#? ])\\S)+')
 const stcUrl = "https://libstc.cc/#/nexus_science/id.dois:"
 const hubBaseUrl = new URL('https://hub.libstc.cc')
 const trueRed = "#BC243C";
@@ -113,7 +113,7 @@ async function onExtensionClick(tab) {
                 browser = chrome;
             }
 
-            const re = /\b(10[.][0-9]{4,}(?:[.][0-9]+)*\/(?:(?!["&'<>])\S)+)\b/;
+            const re = new RegExp('10[.][0-9]{2,}(?:[.][0-9]+)*/(?:(?![%"#? ])\\S)+')
             let foundRegex = location.href.match(re);
             if (!foundRegex) foundRegex = document.body.innerHTML.match(re);
             if (foundRegex) {
