@@ -48,7 +48,9 @@ async function handleDoi(doi) {
         downloadDois.set(downloadId, doi);
         console.log(`Started download with id ${downloadId} from ${url}`);
 
-        const timeout = 5000;
+        // if the PDF is not found it will typically instantly 404
+        // if PDF exists, it may take some time for iroh to locate
+        const timeout = (optionsData?.options?.timeout || 30) * 1000;
         await new Promise(r => setTimeout(r, timeout));
 
         if (downloadId) {
