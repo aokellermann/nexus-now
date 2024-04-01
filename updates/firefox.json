@@ -9,6 +9,10 @@
         {
           "version": "0.2.2",
           "update_link": "https://github.com/aokellermann/nexus-now/releases/download/v0.2.2/nexus-now_0.2.2_firefox.xpi"
+        },
+        {
+          "version": "0.2.3",
+          "update_link": "https://github.com/aokellermann/nexus-now/releases/download/v0.2.3/nexus-now_0.2.3_firefox.xpi"
         }
       ]
     }
