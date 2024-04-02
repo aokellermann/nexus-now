@@ -43,6 +43,5 @@
   "options_ui": {
     "page": "options.html"
   },
-  "update_url": "https://raw.githubusercontent.com/aokellermann/nexus-now/master/updates/chromium.xml",
-  "key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDXmbq3FzG914o1ZyzWYJIhOXSQwXhFSvff84rgO3TnT1i/TwrDKF3Dd6v2HU4J7DAHawg5WZRoLSFEnfJjvoHyckgu1h7qnNfZ1+guKCbFRwbU3/B4F4xCVsZrZgzgRdDGHbbgWrMc+C3G4DAv3dR/j4vQ6rDDoOHxhWOB82+NjHhHexC0bNfpo2b0KUyZUIltzGzJf5+MbQcxSNzY/7xtFJATSRWCbWdgt3pMnxk+VsES7iTe71iuIuN0vKK9EWxTh639AP6TfN3IFezCY1kW4lY5SiVceQDCr1dD1SjwYU7Knzt5DQ0HP/E8yQ9LJk8LbPBV3GtFtAg/Sfh4QbAbUpDcswuNO+yuUX7qrVa85Ho+axx6vF3ZEXExwWtG+J/WJasQfWrjQWMJjCacKWIyycli03k3bnimRUK5UIVIn4ghg9lJSZWXM/so5NbnfNY8NSImDN2dLTiBBXFxe+TaA9FL+zRC45vU9vlVzJ6IdzIAlgZb2xmHD9nWqlLzhds= aokellermann@arch"
+  "update_url": "https://raw.githubusercontent.com/aokellermann/nexus-now/master/updates/chromium.xml"
 }
