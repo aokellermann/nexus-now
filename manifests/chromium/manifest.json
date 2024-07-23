@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "Nexus Now!",
   "short_name": "nexus-now",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "author": "Antony Kellermann",
   "homepage_url": "https://github.com/aokellermann/nexus-now",
   "description": "Access scientific literature using nexus.",

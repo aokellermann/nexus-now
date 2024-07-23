@@ -4,5 +4,6 @@
         <updatecheck codebase='https://github.com/aokellermann/nexus-now/releases/download/v0.2.1/nexus-now_0.2.1_chromium.crx' version='0.2.1' />
         <updatecheck codebase='https://github.com/aokellermann/nexus-now/releases/download/v0.2.2/nexus-now_0.2.2_chromium.crx' version='0.2.2' />
         <updatecheck codebase='https://github.com/aokellermann/nexus-now/releases/download/v0.2.3/nexus-now_0.2.3_chromium.crx' version='0.2.3' />
+        <updatecheck codebase='https://github.com/aokellermann/nexus-now/releases/download/v0.2.4/nexus-now_0.2.4_chromium.crx' version='0.2.4' />
     </app>
 </gupdate>
