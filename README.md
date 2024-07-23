@@ -5,16 +5,16 @@ Inspired by [Sci-Hub Now!](https://github.com/gchenfc/sci-hub-now)
 ## Usage
 
 When on a website for an article that is identifiable by a [DOI](https://www.doi.org/the-identifier/what-is-a-doi/),
-click the Nexus Now extension icon. The [STC](https://standard-template-construct.org) page for that article will be
+click the Nexus Now extension icon. The [STC](https://libstc.cc) page for that article will be
 opened in a new tab. If you enable autodownload, a PDF of the article will attempt to download.
 
 ### Autodownload
 
-STC provides a [Hub API](https://standard-template-construct.org/#/help/stc-hub-api), which maps a DOI
+STC provides a [Hub API](https://hub.libstc.cc), which maps a DOI
 to a PDF. Nexus Now uses this API to automatically download PDFs of articles.
 
 The PDF may not be accessible through this API, but may still be accessible through STC, so if Nexus Now cannot find the
-PDF within 5 seconds, STC will be opened in a new tab as if autodownload is not enabled.
+PDF within 30 seconds, STC will be opened in a new tab as if autodownload is not enabled.
 
 You can opt in or out of autodownload:
 
@@ -32,7 +32,7 @@ You can opt in or out of autodownload:
 
 You can manually install the extension using the installers attached in
 the [latest release](https://github.com/aokellermann/nexus-now/releases). The `.xpi` installer should work for
-gecko-based browsers (firefox), and the `.crx` installer should work for Chromium-based browsers (basically everything
+gecko-based browsers (Firefox), and the `.crx` installer should work for Chromium-based browsers (basically everything
 else).
 
 ### Chrome/Edge
@@ -56,7 +56,7 @@ else).
 
 ## Updating
 
-Automatic extension updating was introduced in version 0.2.1. If you have an older version than 0.2.1 installed,
+Automatic extension updating was introduced in version 0.2.1 and should work at least on Linux. If you have an older version than 0.2.1 installed,
 it is highly recommended that you manually install the latest version, which will subsequently be able to update
 itself without your manual intervention.
 
