@@ -1,5 +1,5 @@
 const doiRegex = new RegExp('10[.][0-9]{2,}(?:[.][0-9]+)*/(?:(?![%"#? ])\\S)+')
-const stcUrl = "https://libstc.cc/#/nexus_science/id.dois:"
+const stcUrl = "https://libstc.cc/#/stc/doi:"
 const hubBaseUrl = new URL('https://hub.libstc.cc')
 const trueRed = "#BC243C";
 
